@@ -1,0 +1,125 @@
+{% load static %}
+<head>
+    <meta property="og:site_name" content="BITNILE"></meta>
+    <meta property="og:url" content="{{link}}"></meta>
+    <meta property="og:title" content="{{title}}"></meta>
+    <meta property="og:description" content="Checkout my Photo on Bitnile"></meta>
+<!--
+   <meta property="og:type" content="video"></meta>
+   <meta property="og:video" content="{{link}}"></meta>s
+   <meta property="og:video:secure_url" content="{{link}}"></meta>
+   <meta property="og:video:type" content="video/mp4"></meta>
+   <meta property="og:video:width" content="720"></meta>
+   <meta property="og:video:height" content="1280"></meta> -->
+   <!-- <meta property="og:image" content="{{thumbnail_link}}" /> -->
+   <meta property="og:image" content="{{link}}" />
+   <meta name="twitter:card" content="summary" />
+   <meta name="twitter:site" content="@reborncode" />
+   <meta name="twitter:creator" content="@reborncode" />
+ <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1">
+</head>
+<style>
+     .set-background {
+        background-color: #F2F2F2;
+        height: 100%;
+        background-position: center center;
+        min-height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .preview-screen {
+        background-color: #F2F2F2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .gif-frame {
+      margin-top: 50px; 
+      height: 350px;
+      width: 600px;
+      border: 10px solid white;
+      background: linear-gradient(to top left, rgb(0, 0, 0) 0%, transparent 60%),
+        linear-gradient(to top right, rgb(0, 0, 0) 0%, transparent 60%),
+        rgb(180, 180, 180);
+    }
+    
+    @media screen and (max-width: 768px) {
+        .gif-frame {
+        height: 100%;
+        width: 80%;
+        margin-top: 40px;
+        border: 5px solid white;
+        }
+    }
+    
+
+    @media screen and (max-width: 768px) {
+        .logo-image {
+        height: 80px;
+        width: 300px;
+        }
+    }
+
+
+</style>
+    <body class="set-background">
+        <div class="preview-screen">    
+            <div class="container screen2">
+                <img height="150px" width="600px" class="logo-image" src="{% static 'images/logo.png' %}" />
+                <div class="gif-frame">
+                    <img  class="image"  alt="" src="{{link}}"/>
+                </div>
+                <div style="display: flex; justify-content: space-around; flex-direction: row; width:300px;margin-top: 30px;">
+                    <a href={{faceboook_link}} target="_blank" style="text-decoration: none;">
+                     <img src="{% static 'images/facebook.svg'%}"  height="60px" width="60px" id="facebook-btn" class="cursor-pointer"> </img>
+                    </a>
+                    <a href={{twitter_link}} target="_blank" style="text-decoration: none;">
+                     <img src="{% static 'images/twitter.svg'%}"  height="60px" width="60px" id="twitter-btn" class="cursor-pointer"> </img>
+                    </a>
+                    <a><img src="{% static 'images/download.svg'%}"  height="60px" width="60px" id="download-btn" style="cursor:pointer;"> </img> </a>
+                </div>
+            </div>
+        </div>
+    </body>
+
+<script>
+    function redirect_screen() {
+       window.location.href = '/api/share-confirmation/';
+    }
+
+     const download = async (compositeImage) => {
+       const a = document.createElement('a')
+       url = "/api/download_photo/"+"{{user_id}}"
+       a.href = url
+       a.download = url.split('/').pop()
+       document.body.appendChild(a)
+       a.click()
+       document.body.removeChild(a)
+     };
+     const twitter_share = async () => {
+      //  var ticket = document.getElementById('twitter-btn').textContent
+      //  const a = document.createElement('a')
+       url = "https://bitnile-backend.herokuapp.com/api/share_twitter/"+"{{user_id}}"
+       const response = await fetch(url);
+     };
+     const fb_share = async () => {
+      //  var ticket = document.getElementById('facebook-btn').textContent
+      //  const a = document.createElement('a')
+       url = "https://bitnile-backend.herokuapp.com/api/share_facebook/"+"{{user_id}}"
+       const response = fetch(url);
+     };
+     document.getElementById('download-btn').addEventListener("click", function(){
+       download();
+       })
+       document.getElementById('twitter-btn').addEventListener("click", function(){
+       twitter_share();
+       })
+       document.getElementById('facebook-btn').addEventListener("click", function(){
+       fb_share();
+       })
+</script>

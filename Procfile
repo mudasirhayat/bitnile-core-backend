@@ -1,0 +1,1 @@
+web: gunicorn bitnile_backend.wsgi

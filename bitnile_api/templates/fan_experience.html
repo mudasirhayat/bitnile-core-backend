@@ -1,0 +1,157 @@
+{% load static %}
+<head>
+    <meta property="og:site_name" content="BITNILE"></meta>
+    <meta property="og:url" content="{{link}}"></meta>
+    <meta property="og:title" content="{{title}}"></meta>
+    <meta property="og:description" content="Checkout my Photo on Bitnile"></meta>
+<!--
+   <meta property="og:type" content="video"></meta>
+   <meta property="og:video" content="{{link}}"></meta>s
+   <meta property="og:video:secure_url" content="{{link}}"></meta>
+   <meta property="og:video:type" content="video/mp4"></meta>
+   <meta property="og:video:width" content="720"></meta>
+   <meta property="og:video:height" content="1280"></meta> -->
+   <!-- <meta property="og:image" content="{{thumbnail_link}}" /> -->
+   <meta property="og:image" content="{{link}}" />
+   <meta name="twitter:card" content="summary" />
+   <meta name="twitter:site" content="@reborncode" />
+   <meta name="twitter:creator" content="@reborncode" />
+   <meta name="twitter:image:src" content="{{link}}" />
+ <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+</head>
+<style>
+     .set-background {
+        background-image: url('/static/images/fanscreen.png');
+        background-color: #F2F2F2;
+        height: 100%;
+        background-position: center center;
+        min-height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .preview-screen {
+        background-image: url('/static/images/gold-splash2_enchanced.jpg');
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        background-color: #F2F2F2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    .gif-frame {
+      height: 350px;
+      width: 600px;
+      background: linear-gradient(to top left, rgb(0, 0, 0) 0%, transparent 60%),
+        linear-gradient(to top right, rgb(0, 0, 0) 0%, transparent 60%),
+        rgb(180, 180, 180);
+    }
+
+    .heading{
+        margin: 0;
+        line-height: 0.5em;
+        font-size:80px;
+        color:white;
+        font-weight:bolder;
+        text-transform:uppercase;
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    @media screen and (max-width: 768px) {
+        .gif-frame {
+        height: 200px;
+        width: 300px;
+        border: 5px solid white;
+        }
+    }
+
+
+    @media screen and (max-width: 768px) {
+        .logo-image {
+            margin-top:2%;
+        }
+        .heading{
+           font-size: 35px;
+        }
+    }
+
+
+    .cursors-pointer {
+      cursor: pointer;
+    }
+
+
+</style>
+    <body>
+        <div style="display: flex; align-items: center; justify-content: center; height:20%;">
+            <img height="auto" width="200px" class="logo-image" src="{% static 'images/bitnile_logo.png' %}" />
+        </div>
+        <div class="preview-screen" style="min-height:80%;">
+            <div class="container screen2">
+                <div class="gif-frame">
+                    <img  class="image"  alt="" src="{{link}}"/>
+                </div>
+                <div style="display: flex; justify-content: space-around; flex-direction: row; width:250px;margin-top: 5%;">
+                    <a href={{faceboook_link}} target="_blank" style="text-decoration: none; text-align: center;">
+                     <img src="{% static 'images/facebook.png'%}"  height="50px" width="50px" id="facebook-btn" class="cursor-pointer"> </img>
+                     <div style="justify-content:center; margin-top: 10%; color: #050f2e;">Facebook</div>
+                    </a>
+                    <a href={{twitter_link}} target="_blank" style="text-decoration: none; text-align: center;"">
+                     <img src="{% static 'images/twitter.png'%}"  height="50px" width="50px" id="twitter-btn" class="cursor-pointer"> </img>
+                      <div style="justify-content:center; margin-top: 10%; color:#050f2e;">Twitter</div>
+                    </a >
+                    <a style="text-align: center;">
+                        <img src="{% static 'images/download.png'%}"  height="50px" width="50px" id="download-btn" class="cursors-pointer"> </img>
+                    <div style=" margin-top: 10%; color:#050f2e;">Download</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+
+<script>
+    function redirect_screen() {
+       window.location.href = '/api/share-confirmation/';
+    }
+
+     const download = async (compositeImage) => {
+       const a = document.createElement('a')
+       url = "/api/download_photo/"+"{{user_id}}"
+       a.href = url
+       a.download = url.split('/').pop()
+       document.body.appendChild(a)
+       a.click()
+       document.body.removeChild(a)
+     };
+     const twitter_share = async () => {
+      //  var ticket = document.getElementById('twitter-btn').textContent
+      //  const a = document.createElement('a')
+       url = "https://bitnile-backend.herokuapp.com/api/share_twitter/"+"{{user_id}}"
+       const response = await fetch(url);
+     };
+     const fb_share = async () => {
+      //  var ticket = document.getElementById('facebook-btn').textContent
+      //  const a = document.createElement('a')
+       url = "https://bitnile-backend.herokuapp.com/api/share_facebook/"+"{{user_id}}"
+       const response = fetch(url);
+     };
+     document.getElementById('download-btn').addEventListener("click", function(){
+       download();
+       })
+       document.getElementById('twitter-btn').addEventListener("click", function(){
+       twitter_share();
+       })
+       document.getElementById('facebook-btn').addEventListener("click", function(){
+       fb_share();
+       })
+</script>

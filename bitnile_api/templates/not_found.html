@@ -1,0 +1,77 @@
+{% load static %}
+<head>
+    <meta property="og:site_name" content="BUICK SWAC"></meta>
+    <meta property="og:url" content="{{page_link}}"></meta>
+    <meta property="og:title" content="{{user_id}}"></meta>
+    <meta property="og:description" content="Checkout my GIF on Buick SWAC"></meta>
+<!--
+   <meta property="og:type" content="video"></meta>
+   <meta property="og:video" content="{{link}}"></meta>s
+   <meta property="og:video:secure_url" content="{{link}}"></meta>
+   <meta property="og:video:type" content="video/mp4"></meta>
+   <meta property="og:video:width" content="720"></meta>
+   <meta property="og:video:height" content="1280"></meta> -->
+   <!-- <meta property="og:image" content="{{thumbnail_link}}" /> -->
+   <meta name="twitter:card" content="summary" />
+   <meta name="twitter:site" content="@reborncode" />
+   <meta name="twitter:creator" content="@reborncode" />
+ <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1">
+</head>
+<style>
+     .set-background {
+        background-color: #F2F2F2;
+        height: 100%;
+        background-position: center center;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .preview-screen {
+        background-color: #F2F2F2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .not-found {
+        font-size: 50;
+        color: #5A5A5A;
+        margin-top: 200px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        img {
+            height: 80px;
+            width: 350px;
+        }
+        .not-found {
+            font-size: 25;
+            color: #5A5A5A;
+            margin-top: 200px;
+        }
+    }  
+    @media only screen and (min-width: 601px) {
+        img {
+            height: 150px;
+            width: 600px;
+        }   
+        .not-found {
+            font-size: 50;
+            color: #5A5A5A;
+            margin-top: 20%;
+        }
+    }
+
+</style>
+    <body class="set-background">
+        <div class="preview-screen">
+            <div class="container screen2">
+                <img height="150px" width="600px" style="margin-top:10%" src="{% static 'images/logo.png' %}" />
+                <div class="not-found">
+                    Sorry, No Image found.
+                </div>
+            </div>
+        </div>
+    </body>

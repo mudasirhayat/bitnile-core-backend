@@ -1,0 +1,201 @@
+{% load static %}
+<head>
+    <meta property="og:site_name" content="BUICK SWAC"></meta>
+    <meta property="og:url" content="{{page_link}}"></meta>
+    <meta property="og:title" content="{{user_id}}"></meta>
+    <meta property="og:description" content="Checkout my GIF on Buick SWAC"></meta>
+<!--
+   <meta property="og:type" content="video"></meta>
+   <meta property="og:video" content="{{link}}"></meta>s
+   <meta property="og:video:secure_url" content="{{link}}"></meta>
+   <meta property="og:video:type" content="video/mp4"></meta>
+   <meta property="og:video:width" content="720"></meta>
+   <meta property="og:video:height" content="1280"></meta> -->
+   <!-- <meta property="og:image" content="{{thumbnail_link}}" /> -->
+   <meta name="twitter:card" content="summary" />
+   <meta name="twitter:site" content="@reborncode" />
+   <meta name="twitter:creator" content="@reborncode" />
+ <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=1">
+</head>
+<style>
+     .set-background {
+        background-color: #F2F2F2;
+        height: 100%;
+        background-position: center center;
+        min-height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .preview-screen {
+        background-color: #F2F2F2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .not-found {
+        font-size: 50;
+        color: #5A5A5A;
+        margin-top: 200px;
+    }
+/* <!--    .table-wrapper {-->
+<!--      margin-top: 20px;-->
+<!--      max-height: 500px;-->
+<!--      overflow: auto;-->
+<!--    }--> */
+
+.table-wrapper {
+  overflow-x: auto;
+  max-height: 400px;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+    table {
+      position: relative;
+      border: 1px solid #ddd;
+      border-collapse: collapse;
+      background-color: white;
+
+      border-radius: 10px;
+
+    }
+    td,
+    th {
+      white-space: nowrap;
+      border: 1px solid #ddd;
+      padding: 20px;
+      text-align: center;
+    }
+    th {
+      background-color: #bbbbbb;
+      position: sticky;
+      top: -1px;
+      z-index: 2;
+    }
+th:first-of-type {
+        left: 0;
+        background-color: #bbbbbb;
+    }
+    tbody tr td:first-of-type {
+        background-color: #bbbbbb;
+        position: sticky;
+        left: 0;
+        text-align: left;
+        z-index: 1;
+    }
+    tbody tr:last-of-type td {
+        position: sticky;
+        bottom: 0;
+        background-color: #bbbbbb;
+        z-index: 2;
+    }
+            .download-bttn {
+          background-color: #1b355e;
+          color: white;
+          border: 2px solid #1b355e;
+          padding: 10px 30px;
+          border-radius: 5px;
+          font-size: 12px;
+        }
+    {% comment %} @media only screen and (max-width: 600px) {
+      img {
+        height: 80px;
+        width: 350px;
+      }
+    } {% endcomment %}
+    {% comment %} @media only screen and (min-width: 601px) {
+      img {
+        height: 150px;
+        width: 600px;
+      } {% endcomment %}
+    }
+
+</style>
+
+    <body class="set-background">
+        <div class="preview-screen">
+            <div class="container screen2">
+                <img height="200px" width="200px" src="{% static 'images/bitnile_logo.png' %}" />
+                <div class="table-wrapper" style="margin-top:100px">
+                  <button id="back" class="download-bttn" style="cursor: pointer; margin-bottom: 2%" onclick="goBackToStats()">Back</button>
+                   <table>
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Photos</th>
+                          <th>Views</th>
+                          <th>Facebook Shares</th>
+                          <th>Twitter Shares</th>
+                          <th>Downloads</th>
+                          <th>Download Images</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in data %}
+                          <tr>
+                            <td>{{ item.date }}</td>
+                            <td>{{ item.user_count }}</td>
+                            <td>{{ item.visits }}</td>
+                            <td>{{ item.fb_share}}</td>
+                            <td>{{ item.twitter_share }}</td>
+                            <td>{{ item.downloads }}</td>
+                            <td>
+                                <button id="download-{{ item.id }}" class="download-bttn" style="cursor: pointer;" onclick="start_download(this.id, {{item.s3_urls}})">Download</button>
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        <tr>
+                          <td><b>Total</b></td>
+                          <td><b>{{ total.user_count }}</b></td>
+                          <td><b>{{ total.visits }}</b></td>
+                          <td><b>{{ total.fb_share }}</b></td>
+                          <td><b>{{ total.twitter_share }}</b></td>
+                          <td><b>{{ total.downloads }}</b></td>
+                          <td></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+<script>
+
+    function start_download(button_id, s3_urls) {
+      for (var i = 0; i < s3_urls.length; i++) {
+        // create a closure to capture the i variable's value
+        (function(i) {
+          setTimeout(
+            () => {
+              var url = s3_urls[i];
+              download(url);
+            },
+            i * 2000 // Delay download every 200ms
+          );
+        })(i);
+      }
+    }
+
+    const download = (url) => {
+      const a = document.createElement('a');
+      const downloadUrl = `/api/downloads/?arg=${url}`;
+      a.href = downloadUrl;
+      a.download = downloadUrl.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
+    function goBackToStats() {
+    window.location.href = `https://bitnile-backend.herokuapp.com/api/show_stats/`
+}
+</script>
