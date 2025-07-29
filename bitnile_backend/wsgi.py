@@ -1,9 +1,13 @@
 """
-WSGI config for bitnile_backend project.
+import sys
 
-It exposes the WSGI callable as a module-level variable named ``application``.
+def application(environ, start_response):
+    status = '200 OK'
+    output = b'Hello, World!'
 
-For more information on this file, see
+    try:
+        start_response(status, [('Content-type', 'text/plain')])
+        return [
 https://docs.djangoproject.com/en/4.1/howto/deployment/wsgi/
 """
 
